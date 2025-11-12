@@ -1,0 +1,70 @@
+# Express Customer CRUD Application
+
+This project is a simple CRUD (Create, Read, Update, Delete) application built with Express.js to manage customer data. It provides a RESTful API for performing operations on customer records.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Testing](#testing)
+- [Environment Variables](#environment-variables)
+- [License](#license)
+
+## Installation
+
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd express-customer-crud
+   ```
+
+2. Install the dependencies:
+   ```
+   npm install
+   ```
+
+3. Create a `.env` file based on the `.env.example` file and configure your environment variables.
+
+## Usage
+
+To start the application, run:
+```
+npm start
+```
+
+For development, you can use:
+```
+npm run dev
+```
+
+## API Endpoints
+
+- **Create Customer**
+  - `POST /customers`
+  
+- **Get Customer**
+  - `GET /customers/:id`
+  
+- **Update Customer**
+  - `PUT /customers/:id`
+  
+- **Delete Customer**
+  - `DELETE /customers/:id`
+
+## Testing
+
+To run the tests, use:
+```
+npm test
+```
+
+## Environment Variables
+
+Make sure to set the following environment variables in your `.env` file:
+- `DATABASE_URL`: The URL for your database connection.
+- `PORT`: The port on which the server will run.
+
+## License
+
+This project is licensed under the MIT License.

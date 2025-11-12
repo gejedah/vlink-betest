@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import Customer, { CustomerAttributes, CustomerCreationAttributes } from '../models/customer.model';
 
 export class CustomerService {
-    async addCustomer(customerData: CustomerCreationAttributes) {
+    static async addCustomer(customerData: CustomerCreationAttributes) {
         return await Customer.create(customerData);
     }
 

@@ -30,9 +30,6 @@ export const signToken = (payload: object, expiresIn = 1800 * 1000) => {
 };
 
 export async function loginUser(email: string, password: string, ip: string): Promise<Object> {
-    if (!ip) {
-        throw new Error('IP address is required for login');
-    }
     const customer: any = await CustomerService.findByEmail(email);
 
     if (!customer) {
@@ -48,6 +45,22 @@ export async function loginUser(email: string, password: string, ip: string): Pr
     const token = signToken(payload);
 
     return { token, user: payload };
+}
+
+export async function signUp(email: string, password: string, name?: string): Promise<Object> {
+    const existing = await CustomerService.findByEmail(email);
+    if (existing) {
+        throw new Error('Email already in use');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // replace plain password with hashed value for the subsequent create call
+    return CustomerService.addCustomer({
+        email,
+        password: hashedPassword,
+        name: name ? name : 'userrrr',
+        status: 'pending'
+    });
 }
 
 export default authenticate;

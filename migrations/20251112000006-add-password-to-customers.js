@@ -8,6 +8,7 @@ module.exports = {
       await queryInterface.addColumn('customers', 'password', {
         type: Sequelize.STRING(255),
         allowNull: false,
+        defaultValue: 'aaaa1111',
       });
     }
   },

@@ -6,7 +6,8 @@ export interface BookAttributes {
     title: string;
     author: string;
     publishedYear?: number | null;
-    stock: number
+    stock: number;
+    price: number;
 }
 
 export type BookCreationAttributes = Optional<BookAttributes, 'id'>;
@@ -17,6 +18,7 @@ class Book extends Model<BookAttributes, BookCreationAttributes> implements Book
     public author!: string;
     public publishedYear?: number | null;
     public stock!: number;
+    public price!: number;
 }
 
 Book.init(
@@ -38,7 +40,7 @@ Book.init(
             type: DataTypes.INTEGER,
             allowNull: true,
             validate: {
-                min: 0,
+                min: 1800,
             },
         },
         stock: {
@@ -47,6 +49,14 @@ Book.init(
             defaultValue: 0,
             validate: {
                 min: 0,
+            },
+        },
+        price: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+            defaultValue: 0,
+            validate: {
+                min: 1000,
             },
         }
     },

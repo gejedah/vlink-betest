@@ -36,6 +36,7 @@ npm start
 For development, you can use:
 ```
 npm run dev
+npx sequelize-cli db:seed:all
 ```
 
 ## API Endpoints

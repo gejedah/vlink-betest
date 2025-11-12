@@ -9,7 +9,7 @@ export interface CartItem {
 export interface CartAttributes {
   id: string;
   customerId: string;
-  items: CartItem[];
+  bookId: string;
   status: string; // e.g., 'open', 'completed', 'cancelled'
   total?: number | null;
 }
@@ -19,7 +19,7 @@ export type CartCreationAttributes = Optional<CartAttributes, 'id' | 'status' | 
 class Cart extends Model<CartAttributes, CartCreationAttributes> implements CartAttributes {
   public id!: string;
   public customerId!: string;
-  public items!: CartItem[];
+  public bookId!: string;
   public status!: string;
   public total?: number | null;
 }
@@ -35,10 +35,9 @@ Cart.init(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    items: {
-      type: DataTypes.JSON,
+    bookId: {
+      type: DataTypes.UUID,
       allowNull: false,
-      defaultValue: [],
     },
     status: {
       type: DataTypes.STRING(55),

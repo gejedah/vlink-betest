@@ -9,7 +9,7 @@ export class CartService {
     return Cart.findByPk(id);
   }
 
-  async listCarts() {
+  async listCarts(user_role?: string) {
     return Cart.findAll();
   }
 

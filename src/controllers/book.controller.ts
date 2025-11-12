@@ -17,7 +17,7 @@ class BookController {
     async getBook(req: Request, res: Response) {
         try {
             const bookId = req.params.id;
-            const book = await this.bookService.findBook(bookId);
+            const book = await this.bookService.findBook(bookId, req.user.role );
             if (book) {
                 res.status(200).json(book);
             } else {

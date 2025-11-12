@@ -17,6 +17,8 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     try {
         const payload = jwt.verify(token, JWT_SECRET);
         req.user = payload;
+        console.log('Authenticated user:', payload);
+        console.log('Authenticated user:', req.user);
         return next();
     } catch (error) {
         return res.status(401).json({ message: 'Invalid or expired token' });
@@ -27,7 +29,10 @@ export const signToken = (payload: object, expiresIn = 1800 * 1000) => {
     return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 
-export async function loginUser(email: string, password: string, device_type: string): Promise<Object> {
+export async function loginUser(email: string, password: string, ip: string): Promise<Object> {
+    if (!ip) {
+        throw new Error('IP address is required for login');
+    }
     const customer: any = await CustomerService.findByEmail(email);
 
     if (!customer) {
@@ -39,7 +44,7 @@ export async function loginUser(email: string, password: string, device_type: st
         throw new Error('Invalid email or password');
     }
 
-    const payload = { id: customer.id, email: customer.email };
+    const payload = { id: customer.id, email: customer.email, role: 'customer' };
     const token = signToken(payload);
 
     return { token, user: payload };

@@ -41,6 +41,7 @@ class BookController {
         try {
             const bookId = req.params.id;
             const bookData = req.body;
+            // const role = typeof req.user === 'string' ? '' : (req.user as { role?: string }).role ?? '';
             const updatedBook = await this.bookService.modifyBook(bookId, bookData, '');
             if (updatedBook) {
                 res.status(200).json(updatedBook);

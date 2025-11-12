@@ -67,8 +67,6 @@ Optional: add npm scripts to package.json for convenience:
 
 ## API Endpoints
 
-- **Create Customer**
-  - `POST /customers`
   
 - **Get Customer**
   - `GET /customers/:id`

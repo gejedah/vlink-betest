@@ -6,7 +6,8 @@ export interface CustomerAttributes {
     name: string;
     email: string;
     phone?: string | null;
-    status: string; // e.g., 'active', 'inactive'
+    status: string; // e.g., 'active', 'inactive';
+    password?: string; // hashed password
 }
 
 export type CustomerCreationAttributes = Optional<CustomerAttributes, 'id'>;
@@ -17,6 +18,12 @@ class Customer extends Model<CustomerAttributes, CustomerCreationAttributes> imp
     public email!: string;
     public phone?: string | null;
     public status!: string;
+    public password?: string;
+
+    // timestamps
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+    public readonly deletedAt!: Date | null;
 }
 
 Customer.init(
@@ -37,6 +44,10 @@ Customer.init(
             validate: {
                 isEmail: true,
             },
+        },
+        password: {
+            type: DataTypes.STRING(255),
+            allowNull: false,
         },
         phone: {
             type: DataTypes.STRING(20),

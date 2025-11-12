@@ -31,9 +31,11 @@ class AuthController {
                 return res.status(400).json({ message: 'Data tidak lengkap' });
             }
 
-            const responsee = await signUp(email, password, name);
+            const responsee: any = await signUp(email, password, name);
 
-            return res.status(200).json({ ...responsee });
+            delete responsee.dataValues?.password;
+
+            return res.status(200).json({ ...responsee.dataValues });
         } catch (err) {
             // console.error('AuthController.signUp error:', err);
             return res.status(500).json({ message: (err as Error).message || 'Internal server error' });

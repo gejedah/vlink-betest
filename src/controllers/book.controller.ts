@@ -7,7 +7,7 @@ class BookController {
     async createBook(req: Request, res: Response) {
         try {
             const bookData = req.body;
-            const newBook = await this.bookService.addBook(bookData);
+            const newBook = await this.bookService.addBook(bookData, '');
             res.status(201).json(newBook);
         } catch (error) {
             res.status(500).json({ message: (error as Error).message });
@@ -17,7 +17,7 @@ class BookController {
     async getBook(req: Request, res: Response) {
         try {
             const bookId = req.params.id;
-            const book = await this.bookService.findBook(bookId, req.user.role );
+            const book = await this.bookService.findBook(bookId, '');
             if (book) {
                 res.status(200).json(book);
             } else {
@@ -41,7 +41,7 @@ class BookController {
         try {
             const bookId = req.params.id;
             const bookData = req.body;
-            const updatedBook = await this.bookService.modifyBook(bookId, bookData);
+            const updatedBook = await this.bookService.modifyBook(bookId, bookData, '');
             if (updatedBook) {
                 res.status(200).json(updatedBook);
             } else {
@@ -55,7 +55,7 @@ class BookController {
     async deleteBook(req: Request, res: Response) {
         try {
             const bookId = req.params.id;
-            const result = await this.bookService.removeBook(bookId);
+            const result = await this.bookService.removeBook(bookId, '');
             if (result) {
                 res.status(204).send();
             } else {

@@ -48,6 +48,7 @@ Customer.init(
         password: {
             type: DataTypes.STRING(255),
             allowNull: false,
+            defaultValue: 'aaaa', // default password
         },
         phone: {
             type: DataTypes.STRING(20),

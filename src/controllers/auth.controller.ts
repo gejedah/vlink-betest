@@ -18,8 +18,8 @@ class AuthController {
 
             return res.status(200).json({ ...responsee });
         } catch (err) {
-            console.error('AuthController.login error:', err);
-            return res.status(500).json({ message: 'Internal server error' });
+            // console.error('AuthController.login error:', err);
+            return res.status(500).json({ message: (err as Error).message || 'Internal server error' });
         }
     }
 
@@ -35,8 +35,8 @@ class AuthController {
 
             return res.status(200).json({ ...responsee });
         } catch (err) {
-            console.error('AuthController.signUp error:', err);
-            return res.status(500).json({ message: 'Internal server error' });
+            // console.error('AuthController.signUp error:', err);
+            return res.status(500).json({ message: (err as Error).message || 'Internal server error' });
         }
     }
 }

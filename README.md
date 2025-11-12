@@ -37,6 +37,32 @@ For development, you can use:
 ```
 npm run dev
 npx sequelize-cli db:seed:all
+
+Install CLI (dev):
+
+npm install --save-dev sequelize-cli
+Run migrations (default env uses development and config.js):
+
+npx sequelize-cli db:migrate
+Run migrations for test env:
+
+npx sequelize-cli db:migrate --env test
+Undo last migration:
+
+npx sequelize-cli db:migrate:undo
+Undo all migrations:
+
+npx sequelize-cli db:migrate:undo:all
+Run all seeders:
+
+npx sequelize-cli db:seed:all
+Undo seeders:
+
+npx sequelize-cli db:seed:undo:all
+Optional: add npm scripts to package.json for convenience:
+
+"migrate": "npx sequelize-cli db:migrate"
+"migrate:undo": "npx sequelize-cli db:migrate:undo"
 ```
 
 ## API Endpoints

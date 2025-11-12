@@ -7,7 +7,7 @@ class CustomerController {
     async createCustomer(req: Request, res: Response) {
         try {
             const customerData = req.body;
-            const newCustomer = await this.customerService.addCustomer(customerData);
+            const newCustomer = await CustomerService.addCustomer(customerData);
             res.status(201).json(newCustomer);
         } catch (error) {
             res.status(500).json({ message: (error as Error).message });

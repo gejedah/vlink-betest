@@ -7,7 +7,25 @@ export class BookService {
     }
 
     async findBook(id: string, user_role: string) {
-        return Book.findByPk(id);
+        let gt = Op.gt;
+        let book: BookAttributes | null = null;
+        if (!user_role || user_role === 'customer') {
+            book = await Book.findOne({
+                where: {
+                    id,
+                    stock:
+                        { gt: 0 }
+                }
+            });
+        }
+        if (user_role === 'admin') {
+            book = await Book.findOne({
+                where: {
+                    id
+                }
+            });
+        }
+        return book;
     }
 
     async listBooks(user_role?: string): Promise<Book[]> {

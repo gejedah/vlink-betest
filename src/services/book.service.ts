@@ -4,7 +4,7 @@ import { Op } from 'sequelize';
 export class BookService {
     async addBook(bookData: BookCreationAttributes, user_role: string) {
         if (!user_role || user_role == 'customer') {
-            throw new Error('Unauthorized: Only admin can modify books');
+            throw new Error('Unauthorized: Only admin can add books');
         }
         return Book.create(bookData);
     }
@@ -61,7 +61,7 @@ export class BookService {
 
     async removeBook(id: string, user_role: string) {
         if (!user_role || user_role === 'customer') {
-            throw new Error('Unauthorized: Only admin can modify books');
+            throw new Error('Unauthorized: Only admin can remove book from catalog');
         }
         const deletedCount = await Book.destroy({ where: { id } });
         return deletedCount > 0;

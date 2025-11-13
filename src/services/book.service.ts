@@ -7,14 +7,14 @@ export class BookService {
     }
 
     async findBook(id: string, user_role: string) {
-        let gt = [Op.gt];
         let book: BookAttributes | null = null;
+        console.log('User role in findBook:', user_role);
         if (!user_role || user_role === 'customer') {
             book = await Book.findOne({
                 where: {
                     id,
                     stock:
-                        { gt: 0 }
+                        { [Op.gte]: 1 }
                 }
             });
         }
@@ -35,7 +35,7 @@ export class BookService {
             return Book.findAll({
                 where: {
                     stock:
-                        { gt: 0 }
+                        { [Op.gte]: 1 }
                 }
             });
         }

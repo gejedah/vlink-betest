@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import CustomerService from '../services/customer.service';
 import { CustomerAttributes } from '../models/customer.model';
 import TokenVersion from '../models/token_version.model';
+import { Op } from 'sequelize';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
 
@@ -28,6 +29,8 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         if (!tokenRecord) {
             return res.status(401).json({ message: 'Token has been revoked' });
         }
+        console.log('Token Record:', tokenRecord);
+        console.log('Payload Token Version:', (payload as any).tokenVersion);
         if ((payload as any).tokenVersion < tokenRecord.tokenVersion) {
             return res.status(401).json({ message: 'Previous Token invalidated. Please login again' });
         }
@@ -53,12 +56,15 @@ export async function loginUser(email: string, password: string, deviceId: strin
         throw new Error('Invalid email or password');
     }
 
-    let tokenVersion = 0;
     let resultToken = await TokenVersion.findOrCreate({
         where: { userId: customer.id },
-        defaults: { userId: customer.id, tokenVersion, deviceId }
+        defaults: {
+            userId: customer.id,
+            deviceId,
+            tokenVersion: 0
+        }
     });
-    // console.log('Result Token:', resultToken);
+    let tokenVersion = resultToken[0].tokenVersion;
     if (!resultToken[1] && resultToken[0].deviceId !== deviceId) {
         console.log('Device changed, updating token version');
         // Increment token version to invalidate previous tokens

@@ -58,8 +58,8 @@ export async function loginUser(email: string, password: string, deviceId: strin
         where: { userId: customer.id },
         defaults: { userId: customer.id, tokenVersion, deviceId }
     });
-    console.log('Result Token:', resultToken);
-    if (resultToken[1] && resultToken[0].deviceId !== deviceId) {
+    // console.log('Result Token:', resultToken);
+    if (!resultToken[1] && resultToken[0].deviceId !== deviceId) {
         console.log('Device changed, updating token version');
         // Increment token version to invalidate previous tokens
         tokenVersion = resultToken[0].tokenVersion + 1;

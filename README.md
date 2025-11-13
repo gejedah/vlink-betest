@@ -1,6 +1,8 @@
 # Express Customer Admin book api 
 
-This project is a simple CRUD (Create, Read, Update, Delete) application built with Express.js to manage customer data. It provides a RESTful API for performing operations on customer records.
+This project is a simple Book transaction rest api application built with Express.js. It provides a RESTful API for performing operations on book, cart, transaction records.
+
+Database is on localhost so migrate migration file and later seed table first
 
 ## Table of Contents
 

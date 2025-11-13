@@ -1,4 +1,5 @@
 import Book, { BookAttributes, BookCreationAttributes } from '../models/book.model';
+import { Op } from 'sequelize';
 
 export class BookService {
     async addBook(bookData: BookCreationAttributes, user_role: string) {
@@ -9,8 +10,21 @@ export class BookService {
         return Book.findByPk(id);
     }
 
-    async listBooks(user_role?: string) {
-        return Book.findAll();
+    async listBooks(user_role?: string): Promise<Book[]> {
+        let gt = Op.gt;
+        let books: Book[] = [];
+        if (!user_role || user_role === 'customer') {
+            return Book.findAll({
+                where: {
+                    stock:
+                        { gt: 0 }
+                }
+            });
+        }
+        if (user_role === 'admin') {
+            return await Book.findAll();
+        }
+        return books;
     }
 
     async modifyBook(id: string, updatedData: Partial<BookAttributes>, user_role: string) {

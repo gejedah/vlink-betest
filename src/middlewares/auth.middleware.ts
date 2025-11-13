@@ -24,12 +24,14 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         let tokenRecord: any = await TokenVersion.findOne({
             where: {
                 userId: (payload as any).id,
-                tokenVersion: (payload as any).tokenVersion,
                 revokedAt: null
             }
         });
         if (!tokenRecord) {
             return res.status(401).json({ message: 'Token has been revoked' });
+        }
+        if ((payload as any).tokenVersion < tokenRecord.tokenVersion) {
+            return res.status(401).json({ message: 'Previous Token invalidated. Please login again' });
         }
         return next();
     } catch (error) {
@@ -54,13 +56,20 @@ export async function loginUser(email: string, password: string, ip: string): Pr
     }
 
     let tokenVersion = 0;
-    // Increment token version to invalidate previous tokens
     tokenVersion += 1;
-    await TokenVersion.create({
-        userId: customer.id,
-        tokenVersion,
-        ip
+    let resultToken = await TokenVersion.findOrCreate({
+        where: { userId: customer.id },
+        defaults: { userId: customer.id, tokenVersion, ip }
     });
+    if (resultToken[1] && resultToken[0].ip !== ip) {
+        console.log('IP address changed, updating token version');
+        // Increment token version to invalidate previous tokens
+        tokenVersion = resultToken[0].tokenVersion + 1;
+        await TokenVersion.update(
+            { tokenVersion, ip },
+            { where: { userId: customer.id } }
+        );
+    }
 
     const payload = {
         id: customer.id, email: customer.email, role: 'customer'

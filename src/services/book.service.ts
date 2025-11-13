@@ -7,7 +7,7 @@ export class BookService {
     }
 
     async findBook(id: string, user_role: string) {
-        let gt = Op.gt;
+        let gt = [Op.gt];
         let book: BookAttributes | null = null;
         if (!user_role || user_role === 'customer') {
             book = await Book.findOne({
@@ -29,7 +29,7 @@ export class BookService {
     }
 
     async listBooks(user_role?: string): Promise<Book[]> {
-        let gt = Op.gt;
+        let gt = [Op.gt];
         let books: Book[] = [];
         if (!user_role || user_role === 'customer') {
             return Book.findAll({

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import CustomerService from '../services/customer.service';
+import { CustomerAttributes } from 'models/customer.model';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
 
@@ -41,7 +42,15 @@ export async function loginUser(email: string, password: string, ip: string): Pr
         throw new Error('Invalid email or password');
     }
 
-    const payload = { id: customer.id, email: customer.email, role: 'customer' };
+    let tokenVersion = 0;
+    // Increment token version to invalidate previous tokens
+    tokenVersion += 1;
+    // await CustomerService.updateCustomer(customer.id, { tokenVersion });
+
+    const payload = {
+        id: customer.id, email: customer.email, role: 'customer'
+        , tokenVersion
+    };
     const token = signToken(payload);
 
     return { token, user: payload };
@@ -59,12 +68,13 @@ export async function signUp(email: string, password: string, name?: string, kod
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     // replace plain password with hashed value for the subsequent create call
-    return CustomerService.addCustomer({
+    const newCustomer: CustomerAttributes = await CustomerService.addCustomer({
         email,
         password: hashedPassword,
         name: name ? name : 'userrrr',
         status: 'pending'
     });
+    return { success: true, user_id: newCustomer?.id };
 }
 
 export default authenticate;

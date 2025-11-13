@@ -19,8 +19,6 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     try {
         const payload = jwt.verify(token, JWT_SECRET);
         req.user = payload;
-        // console.log('Authenticated user:', payload);
-        // console.log('Authenticated user:', req.user);
         let tokenRecord: any = await TokenVersion.findOne({
             where: {
                 userId: (payload as any).id,
@@ -43,7 +41,7 @@ export const signToken = (payload: object, expiresIn = 1800 * 1000) => {
     return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 
-export async function loginUser(email: string, password: string, ip: string): Promise<Object> {
+export async function loginUser(email: string, password: string, deviceId: string): Promise<Object> {
     const customer: any = await CustomerService.findByEmail(email);
 
     if (!customer) {
@@ -56,17 +54,17 @@ export async function loginUser(email: string, password: string, ip: string): Pr
     }
 
     let tokenVersion = 0;
-    tokenVersion += 1;
     let resultToken = await TokenVersion.findOrCreate({
         where: { userId: customer.id },
-        defaults: { userId: customer.id, tokenVersion, ip }
+        defaults: { userId: customer.id, tokenVersion, deviceId }
     });
-    if (resultToken[1] && resultToken[0].ip !== ip) {
-        console.log('IP address changed, updating token version');
+    console.log('Result Token:', resultToken);
+    if (resultToken[1] && resultToken[0].deviceId !== deviceId) {
+        console.log('Device changed, updating token version');
         // Increment token version to invalidate previous tokens
         tokenVersion = resultToken[0].tokenVersion + 1;
         await TokenVersion.update(
-            { tokenVersion, ip },
+            { tokenVersion, deviceId },
             { where: { userId: customer.id } }
         );
     }

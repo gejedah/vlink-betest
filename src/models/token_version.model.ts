@@ -5,7 +5,7 @@ export interface TokenVersionAttributes {
   id: number;
   userId: string;
   tokenVersion: number;
-  ip: string;
+  deviceId: string;
   revokedAt?: Date | null;
 }
 
@@ -15,7 +15,7 @@ class TokenVersion extends Model<TokenVersionAttributes, TokenVersionCreationAtt
   public id!: number;
   public userId!: string;
   public tokenVersion!: number;
-  public ip!: string;
+  public deviceId!: string;
   public revokedAt?: Date | null;
 
   public readonly createdAt!: Date;
@@ -40,9 +40,10 @@ TokenVersion.init(
       defaultValue: 0,
       field: 'token_version',
     },
-    ip: {
-      type: DataTypes.STRING(30),
+    deviceId: {
+      type: DataTypes.STRING(100),
       allowNull: false,
+      field: 'device_id',
     },
     revokedAt: {
       type: DataTypes.DATE,

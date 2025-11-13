@@ -18,8 +18,8 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
-      ip: {
-        type: Sequelize.STRING(30),
+      device_id: {
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
       revoked_at: {

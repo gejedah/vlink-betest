@@ -26,9 +26,7 @@ TokenVersion.init(
   {
     id: {
       type: DataTypes.BIGINT,
-    //   defaultValue: {
-        autoIncrement: true,
-    //   },
+      autoIncrement: true,
       primaryKey: true,
     },
     userId: {

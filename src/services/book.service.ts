@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 
 export class BookService {
     async addBook(bookData: BookCreationAttributes, user_role: string) {
-        if (!user_role || user_role === 'customer') {
+        if (!user_role || user_role == 'customer') {
             throw new Error('Unauthorized: Only admin can modify books');
         }
         return Book.create(bookData);

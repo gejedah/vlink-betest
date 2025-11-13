@@ -7,7 +7,8 @@ class BookController {
     async createBook(req: Request, res: Response) {
         try {
             const bookData = req.body;
-            const newBook = await this.bookService.addBook(bookData, '');
+            const userRole = (typeof req.user === 'object' && req.user !== null && 'role' in req.user) ? (req.user as any).role : '';
+            const newBook = await this.bookService.addBook(bookData, userRole);
             res.status(201).json(newBook);
         } catch (error) {
             res.status(500).json({ message: (error as Error).message });
@@ -17,7 +18,8 @@ class BookController {
     async getBook(req: Request, res: Response) {
         try {
             const bookId = req.params.id;
-            const book = await this.bookService.findBook(bookId, '');
+            const userRole = (typeof req.user === 'object' && req.user !== null && 'role' in req.user) ? (req.user as any).role : '';
+            const book = await this.bookService.findBook(bookId, userRole);
             if (book) {
                 res.status(200).json(book);
             } else {
@@ -28,9 +30,10 @@ class BookController {
         }
     }
 
-    async listBooks(_req: Request, res: Response) {
+    async listBooks(req: Request, res: Response) {
         try {
-            const books = await this.bookService.listBooks();
+            const userRole = (typeof req.user === 'object' && req.user !== null && 'role' in req.user) ? (req.user as any).role : '';
+            const books = await this.bookService.listBooks(userRole);
             res.status(200).json(books);
         } catch (error) {
             res.status(500).json({ message: (error as Error).message });
@@ -41,8 +44,8 @@ class BookController {
         try {
             const bookId = req.params.id;
             const bookData = req.body;
-            // const role = typeof req.user === 'string' ? '' : (req.user as { role?: string }).role ?? '';
-            const updatedBook = await this.bookService.modifyBook(bookId, bookData, '');
+            const role = (typeof req.user === 'object' && req.user !== null && 'role' in req.user) ? (req.user as any).role : '';
+            const updatedBook = await this.bookService.modifyBook(bookId, bookData, role);
             if (updatedBook) {
                 res.status(200).json(updatedBook);
             } else {
@@ -56,7 +59,8 @@ class BookController {
     async deleteBook(req: Request, res: Response) {
         try {
             const bookId = req.params.id;
-            const result = await this.bookService.removeBook(bookId, '');
+            const userRole = (typeof req.user === 'object' && req.user !== null && 'role' in req.user) ? (req.user as any).role : '';
+            const result = await this.bookService.removeBook(bookId, userRole);
             if (result) {
                 res.status(204).send();
             } else {

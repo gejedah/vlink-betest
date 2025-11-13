@@ -40,7 +40,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-export const signToken = (payload: object, expiresIn = 1800 * 1000) => {
+export const signToken = (payload: object, expiresIn = 3600 * 1000) => {
     return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 

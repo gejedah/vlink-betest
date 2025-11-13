@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import CustomerService from '../services/customer.service';
-import { CustomerAttributes } from 'models/customer.model';
+import { CustomerAttributes } from '../models/customer.model';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
 

@@ -3,10 +3,11 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import CustomerService from '../services/customer.service';
 import { CustomerAttributes } from '../models/customer.model';
+import TokenVersion from '../models/token_version.model';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
 
-export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -20,6 +21,16 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
         req.user = payload;
         // console.log('Authenticated user:', payload);
         // console.log('Authenticated user:', req.user);
+        let tokenRecord: any = await TokenVersion.findOne({
+            where: {
+                userId: (payload as any).id,
+                tokenVersion: (payload as any).tokenVersion,
+                revokedAt: null
+            }
+        });
+        if (!tokenRecord) {
+            return res.status(401).json({ message: 'Token has been revoked' });
+        }
         return next();
     } catch (error) {
         return res.status(401).json({ message: 'Invalid or expired token' });
@@ -45,7 +56,11 @@ export async function loginUser(email: string, password: string, ip: string): Pr
     let tokenVersion = 0;
     // Increment token version to invalidate previous tokens
     tokenVersion += 1;
-    // await CustomerService.updateCustomer(customer.id, { tokenVersion });
+    await TokenVersion.create({
+        userId: customer.id,
+        tokenVersion,
+        ip
+    });
 
     const payload = {
         id: customer.id, email: customer.email, role: 'customer'

@@ -49,10 +49,12 @@ export const signToken = (payload: object, expiresIn = 3600 * 1000) => {
 };
 
 export async function loginUser(email: string, password: string, deviceId: string): Promise<Object> {
-    const user: Admin | Customer | null = await Promise.race([
+    const users: any[] = await Promise.all([
         CustomerService.findByEmail(email),
-        AdminService.findByEmail(email)]);
+        AdminService.findByEmail(email)]
+    );
 
+    const user = users.find(u => u !== null);
     if (!user) {
         throw new Error('Invalid email or password');
     }

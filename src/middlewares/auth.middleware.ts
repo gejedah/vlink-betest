@@ -67,6 +67,7 @@ export async function loginUser(email: string, password: string, deviceId: strin
     // determine role based on properties present in the user object
     const isAdmin = (u: any): u is AdminAttributes => (u && typeof u === 'object' && 'role' in u);
     let role = isAdmin(user) ? user.role : roleEnum.customer;
+    console.log(`User identified: ${user}`);
     let resultToken = await TokenVersion.findOrCreate({
         where: { userId: user.id },
         defaults: {
@@ -103,7 +104,7 @@ export async function signUp(email: string, password: string, name?: string, kod
     }
 
     let role = roleEnum.customer;
-    if (kode === 'ADMIN2024') {
+    if (kode?.toUpperCase() === 'ADMIN2024') {
         role = roleEnum.admin;
     }
     // replace plain password with hashed value for the subsequent create call

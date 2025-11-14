@@ -6,6 +6,7 @@ import { setAuthRoutes } from './routes/auth.routes';
 import { setCartRoutes } from './routes/cart.routes';
 import config from './config';
 import { rateLimiterMiddleware } from './middlewares/rateLimiter.middleware';
+import { setAdminRoutes } from './routes/admin.routes';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(rateLimiterMiddleware);
 
 setAuthRoutes(app);
 setCustomerRoutes(app);
+setAdminRoutes(app);
 setBookRoutes(app);
 setCartRoutes(app);
 

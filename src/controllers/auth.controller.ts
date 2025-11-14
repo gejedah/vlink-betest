@@ -24,13 +24,13 @@ class AuthController {
 
     async signUp(req: Request, res: Response) {
         try {
-            const { email, password, name } = req.body;
+            const { email, password, name, kode } = req.body;
 
             if (!email || !password) {
                 return res.status(400).json({ message: 'Data tidak lengkap' });
             }
 
-            const responsee: any = await signUp(email, password, name);
+            const responsee: any = await signUp(email, password, name, kode);
 
             delete responsee.dataValues?.password;
 

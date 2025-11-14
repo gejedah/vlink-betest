@@ -7,7 +7,7 @@ export interface CustomerAttributes {
     email: string;
     phone?: string | null;
     status: string; // e.g., 'active', 'inactive';
-    password?: string; // hashed password
+    password: string; // hashed password
 }
 
 export type CustomerCreationAttributes = Optional<CustomerAttributes, 'id'>;
@@ -18,7 +18,7 @@ class Customer extends Model<CustomerAttributes, CustomerCreationAttributes> imp
     public email!: string;
     public phone?: string | null;
     public status!: string;
-    public password?: string;
+    public password!: string;
 
     // timestamps
     public readonly createdAt!: Date;

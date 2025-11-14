@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 import CustomerService from '../services/customer.service';
 import { CustomerAttributes } from '../models/customer.model';
 import TokenVersion from '../models/token_version.model';
-import { Op } from 'sequelize';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
 

@@ -8,6 +8,11 @@ import { Op } from 'sequelize';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
 
+export let roleEnum = {
+    customer: 'customer',
+    admin: 'admin'
+}
+
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
@@ -90,13 +95,13 @@ export async function signUp(email: string, password: string, name?: string, kod
         throw new Error('Email already in use');
     }
 
-    let role = 'customer';
+    let role = roleEnum.customer;
     if (kode === 'ADMIN2024') {
-        role = 'admin';
+        role = roleEnum.admin;
     }
     // replace plain password with hashed value for the subsequent create call
     const hashedPassword = await bcrypt.hash(password, 10);
-    if (role !== 'admin') {
+    if (role !== roleEnum.admin) {
         const newCustomer: CustomerAttributes = await CustomerService.addCustomer({
             email,
             password: hashedPassword,
@@ -105,11 +110,11 @@ export async function signUp(email: string, password: string, name?: string, kod
         });
         return { success: true, user_id: newCustomer?.id };
     }
-    if (role === 'admin') {
+    if (role === roleEnum.admin) {
         const newAdmin: CustomerAttributes = await CustomerService.addCustomer({
             email,
             password: hashedPassword,
-            name: name ? name : 'adminuser',
+            name: name ? name : 'adminuserrrr',
             status: 'active',
         });
         return { success: true, user_id: newAdmin?.id };

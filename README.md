@@ -4,6 +4,8 @@ This project is a simple Book transaction rest api application built with Expres
 
 Database is on localhost so migrate migration file and later seed table first
 
+There is also example data on example_data folder
+
 ## Table of Contents
 
 - [Installation](#installation)

@@ -49,7 +49,7 @@ export const signToken = (payload: object, expiresIn = 3600 * 1000) => {
 };
 
 export async function loginUser(email: string, password: string, deviceId: string): Promise<Object> {
-    const user: Admin | Customer | null  = await Promise.race([
+    const user: Admin | Customer | null = await Promise.race([
         CustomerService.findByEmail(email),
         AdminService.findByEmail(email)]);
 
@@ -85,7 +85,8 @@ export async function loginUser(email: string, password: string, deviceId: strin
     }
 
     const payload = {
-        id: user.id, email: user.email, role: role
+        id: user.id, email: user.email
+        , role
         , tokenVersion
     };
     const token = signToken(payload);

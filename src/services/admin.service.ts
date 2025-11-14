@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
-import Admin, { AdminAttributes, UserCreationAttributes } from '../models/admin.model';
+import Admin, { AdminAttributes, AdminCreationAttributes } from '../models/admin.model';
 
 export class AdminService {
-    static async addAdmin(adminData: UserCreationAttributes) {
+    static async addAdmin(adminData: AdminCreationAttributes) {
         return await Admin.create(adminData);
     }
 

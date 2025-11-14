@@ -94,15 +94,27 @@ export async function signUp(email: string, password: string, name?: string, kod
     if (kode === 'ADMIN2024') {
         role = 'admin';
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
     // replace plain password with hashed value for the subsequent create call
-    const newCustomer: CustomerAttributes = await CustomerService.addCustomer({
-        email,
-        password: hashedPassword,
-        name: name ? name : 'userrrr',
-        status: 'pending'
-    });
-    return { success: true, user_id: newCustomer?.id };
+    const hashedPassword = await bcrypt.hash(password, 10);
+    if (role !== 'admin') {
+        const newCustomer: CustomerAttributes = await CustomerService.addCustomer({
+            email,
+            password: hashedPassword,
+            name: name ? name : 'userrrr',
+            status: 'pending'
+        });
+        return { success: true, user_id: newCustomer?.id };
+    }
+    if (role === 'admin') {
+        const newAdmin: CustomerAttributes = await CustomerService.addCustomer({
+            email,
+            password: hashedPassword,
+            name: name ? name : 'adminuser',
+            status: 'active',
+        });
+        return { success: true, user_id: newAdmin?.id };
+    }
+    return { success: false };
 }
 
 export default authenticate;

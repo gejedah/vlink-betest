@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import CustomerService from '../services/customer.service';
-import { CustomerAttributes } from '../models/customer.model';
+import Customer, { CustomerAttributes } from '../models/customer.model';
 import TokenVersion from '../models/token_version.model';
 import AdminService from '../services/admin.service';
-import { AdminAttributes } from '../models/admin.model';
+import Admin, { AdminAttributes } from '../models/admin.model';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default-secret';
 
@@ -49,7 +49,7 @@ export const signToken = (payload: object, expiresIn = 3600 * 1000) => {
 };
 
 export async function loginUser(email: string, password: string, deviceId: string): Promise<Object> {
-    const user: AdminAttributes | CustomerAttributes | null = await Promise.race([
+    const user: Admin | Customer | null  = await Promise.race([
         CustomerService.findByEmail(email),
         AdminService.findByEmail(email)]);
 

@@ -122,6 +122,7 @@ export async function signUp(email: string, password: string, name?: string, kod
         const newAdmin: AdminAttributes = await AdminService.addAdmin({
             email,
             password: hashedPassword,
+            role: roleEnum.admin,
             username: name ? name : 'adminuserrrr',
             status: 'active',
         });

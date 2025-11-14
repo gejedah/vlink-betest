@@ -1,0 +1,3 @@
+"id","username","email","password","role","status","is_verified","last_login","created_at","updated_at","deleted_at"
+"81b249a6-0d3e-4ef2-9833-8143f701cd17",vinnnn,kevin@vin.co,$2b$10$dxwVv.UJT0qyNVGP67ZpKOI7In9YNYpfZdimvLuNPb6y0mc3UULGq,admin,active,true,,2025-11-14 11:15:58.220 +0700,2025-11-14 11:15:58.220 +0700,
+c2103b71-8152-47b4-b73a-edb6ecd28908,adminuserrrr,kevin@zh.co,$2b$10$TComTz1AauS20BFKj8kcvejxPdSCJmEO5ue8PyM2oMstUI430UZdq,admin,active,true,,2025-11-14 11:55:14.324 +0700,2025-11-14 11:55:14.324 +0700,
